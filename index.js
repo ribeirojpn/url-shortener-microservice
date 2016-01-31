@@ -4,8 +4,11 @@ var app = require('express')();
 process.env.URL = 'http://localhost:3000/';
 var urlContent = { "original_url": null, "short_url": null };
 
+app.set('views','./views')
+app.set('view engine','ejs');
+
 app.get('/',function(req,res) {
-  res.send('Hello World');
+  res.render('index');
 });
 
 app.get('/new/:url*',function(req,res) {
@@ -14,7 +17,7 @@ app.get('/new/:url*',function(req,res) {
   if (validate(req.url.slice(5))){
     urlContent.original_url = req.url.slice(5);
     // add short_url
-    
+
     res.send(urlContent);
   } else if(req.query.allow == 'true'){
     urlContent.original_url = 'invalid';
