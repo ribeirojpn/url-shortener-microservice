@@ -1,0 +1,14 @@
+{
+  "name": "url-shortener",
+  "version": "0.1.0",
+  "description": "url shortener microservice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joao Paulo Ribeiro <jpnribeiro94@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
