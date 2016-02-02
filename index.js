@@ -2,8 +2,8 @@
 var http = require('http');
 var app = require('express')();
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/url-shortener');
-process.env.URL = process.env.APP_URL ||'http://localhost:3000/';
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/url-shortener');
+var URL = process.env.APP_URL ||'http://localhost:3000/';
 
 // mongodb schema
 var urlSchema = mongoose.Schema({
@@ -24,7 +24,7 @@ app.get('/',function(req,res) {
 });
 
 app.get('/:id',function(req,res) {
-  Url.findOne({short_url: process.env.URL + req.params.id},function(err,url) {
+  Url.findOne({short_url: URL + req.params.id},function(err,url) {
     res.redirect(url.original_url);
   });
 });
@@ -41,7 +41,7 @@ app.get('/new/:url*',function(req,res) {
         res.json(result);
       } else {
         var newUrl = {};
-        newUrl.short_url = process.env.URL + randomUrl();
+        newUrl.short_url = URL + randomUrl();
         newUrl.original_url = paramUrl;
         var urlContent = new Url(newUrl);
         urlContent.save(function (err,url) {
@@ -59,7 +59,7 @@ app.get('/new/:url*',function(req,res) {
   } else if(req.query.allow == 'true'){
     var result = {}
     result.original_url = 'invalid';
-    result.short_url = process.env.URL + 'zZzZzZz';
+    result.short_url = URL + 'zZzZzZz';
 
     res.send(result);
   } else {
@@ -67,7 +67,7 @@ app.get('/new/:url*',function(req,res) {
   }
 });
 
-http.createServer(app).listen(3000, function() {
+http.createServer(app).listen(process.env.PORT || 3000, function() {
   console.log('Server on...');
 });
 
@@ -93,6 +93,6 @@ function randomUrl(){
   for (var i=0; i < 4; i++){
     url += VALUES.charAt(Math.floor(Math.random() * VALUES.length));
   }
-  
+
   return url;
 }
