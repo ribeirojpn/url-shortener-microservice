@@ -23,14 +23,7 @@ app.get('/',function(req,res) {
   res.render('index');
 });
 
-app.get('/:id',function(req,res) {
-  Url.findOne({short_url: URL + req.params.id},function(err,url) {
-    res.redirect(url.original_url);
-  });
-});
-
 app.get('/new/:url*',function(req,res) {
-
   var paramUrl = req.url.slice(5);
   if (validate(paramUrl)){
     var result = {};
@@ -65,6 +58,14 @@ app.get('/new/:url*',function(req,res) {
   } else {
     res.send({"error":"URL invalid"});
   }
+});
+
+app.get('/:id',function(req,res) {
+  Url.findOne({short_url: URL + req.params.id},function(err,url) {
+    if (url){
+      res.redirect(url.original_url);
+    }
+  });
 });
 
 http.createServer(app).listen(process.env.PORT || 3000, function() {
