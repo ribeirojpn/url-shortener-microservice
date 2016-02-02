@@ -64,6 +64,8 @@ app.get('/:id',function(req,res) {
   Url.findOne({short_url: URL + req.params.id},function(err,url) {
     if (url){
       res.redirect(url.original_url);
+    } else {
+      res.send({"error":"URL invalid"});
     }
   });
 });
