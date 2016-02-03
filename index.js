@@ -13,7 +13,6 @@ var urlSchema = mongoose.Schema({
 
 var Url = mongoose.model('url', urlSchema);
 
-
 // express configs
 app.set('views','./views');
 app.set('view engine','ejs');
@@ -27,11 +26,9 @@ app.get('/new/:url*',function(req,res) {
   var paramUrl = req.url.slice(5);
   if (validate(paramUrl)){
     var result = {};
-    Url.findOne({original_url: paramUrl}).exec().then(function(url) {
+    Url.findOne({original_url: paramUrl}).select({original_url:1, short_url:1,_id:0}).exec().then(function(url) {
       if (url){
-        result.original_url = url.original_url;
-        result.short_url = url.short_url;
-        res.json(result);
+        res.json(url);
       } else {
         var newUrl = {};
         newUrl.short_url = URL + randomUrl();
