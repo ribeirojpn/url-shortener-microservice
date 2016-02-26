@@ -31,7 +31,7 @@ app.get('/new/:url*',function(req,res) {
         res.json(url);
       } else {
         var newUrl = {};
-        newUrl.short_url = URL + randomUrl();
+        newUrl.short_url = URL + getRandomUrl();
         newUrl.original_url = paramUrl;
         var urlContent = new Url(newUrl);
         urlContent.save(function (err,url) {
@@ -86,7 +86,7 @@ db.once('open', function() {
 });
 
 // Generate random url
-function randomUrl(){
+function getRandomUrl(){
   var url = "";
   var VALUES = "ABCDEFabcdef0123456789";
 
